@@ -25,24 +25,6 @@ NeuralNetwork *network_create(int input, int hidden, int output, double lr) {
 }
 
 void network_train(NeuralNetwork *net, Matrix *input_data, Matrix *output_data) {
-    // Matrix *hidden_inputs = dot(net->hidden_weights, input_data);
-    // Matrix *hidden_outputs = apply(hidden_inputs, sigmoid);
-    // Matrix *final_inputs = dot(net->output_weights, hidden_outputs);
-    // Matrix *final_outputs = apply(final_inputs, sigmoid);
-    // // where da errors
-    // Matrix *output_errors = subtract(output_data, final_outputs);
-    // Matrix* transposed_mat = transpose(net->output_weights);
-    // Matrix* hidden_errors = dot(transposed_mat, output_errors);
-    // matrix_free(transposed_mat);
-    //
-    // Matrix *sigmoid_primed_mat = sigmoidPrime(final_outputs);
-    // Matrix *multiplied_mat = multiply(output_errors, sigmoid_primed_mat);
-    // transposed_mat = transpose(hidden_outputs);
-    // Matrix *dot_mat = dot(multiplied_mat, transposed_mat);
-    // Matrix *scaled_mat = scale(dot_mat, net->learning_rate);
-    // Matrix *added_mat = add(scaled_mat, net->output_weights);
-    // matrix_free(net->output_weights);
-    // net->output_weights = added_mat;
     Matrix* hidden_inputs = dot(net->hidden_weights, input_data);
     Matrix* hidden_outputs = apply(sigmoid, hidden_inputs);
     Matrix* final_inputs = dot(net->output_weights, hidden_outputs);
@@ -61,7 +43,7 @@ void network_train(NeuralNetwork *net, Matrix *input_data, Matrix *output_data) 
     Matrix* scaled_mat = scale(dot_mat, net->learning_rate);
     Matrix* added_mat = add(net->output_weights, scaled_mat);
 
-    matrix_free(net->output_weights); // Free the old weights before replacing
+    matrix_free(net->output_weights);
     net->output_weights = added_mat;
 
     matrix_free(sigmoid_primed_mat);
