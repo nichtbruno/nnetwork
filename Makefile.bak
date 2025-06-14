@@ -10,7 +10,6 @@ OBJ := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC))
 TARGET := $(BUILD_DIR)/main
 
 CFLAGS := -std=c17 -Wall -lm
-LDFLAGS := -lSDL2main -lSDL2
 
 all: $(TARGET)
 	@echo "Build complete 😎"
@@ -18,15 +17,15 @@ all: $(TARGET)
 -include $(OBJ:.o=.d)
 
 $(TARGET): $(OBJ) | $(BUILD_DIR)
-	$(CC) $(OBJ) $(CFLAGS) $(LDFLAGS) -o $(TARGET)
-
-$(BUILD_DIR)/%.d: $(SRC_DIR)/%.c | $(BUILD_DIR)
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -MM -MT $(@:.d=.o) $< > $@
+	$(CC) $(OBJ) $(CFLAGS) -o $(TARGET)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -MM -MT $(@:.d=.o) $< > $@
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
